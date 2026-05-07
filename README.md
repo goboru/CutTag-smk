@@ -1,4 +1,4 @@
-# ATAC-seq preprocessing with snakemake 
+# CUT&Tag-seq preprocessing with snakemake 
 
 * Initial QC with fastqc and multiqc
 * Trimming with fastp
