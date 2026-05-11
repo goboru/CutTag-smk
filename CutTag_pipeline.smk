@@ -409,8 +409,7 @@ rule plot_all_frip:
 # Rule 7.3: Change to bigwig. (Needed for 7.4)
 rule bam_to_bw:
     input:
-        bam = f"{dir_out}/macs2_input/{{uniq_sample}}.filtered.bam",
-        bai = f"{dir_out}/macs2_input/{{uniq_sample}}.filtered.bam.bai"
+        bam = f"{dir_out}/macs2_input/{{uniq_sample}}.filtered.bam"
     output:
         bw = f"{dir_out}/bigwig/{{uniq_sample}}.bw"
     log:

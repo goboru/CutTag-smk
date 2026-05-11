@@ -1,7 +1,7 @@
 conda_env: "/home/gborrego/gborrego/AB_Multiomics_CD14_CD4/scripts/ATACpipeline-environment.yml"
 
-raw_dir: "/home/gborrego/gborrego/AB_Multiomics_CD14_CD4/data/raw/ATAC"
-out_dir: "/home/gborrego/gborrego/AB_Multiomics_CD14_CD4/data/clean"
+raw_dir: "/media/scratch/gborrego/AB_Multiomics_CD14_CD4/CutTag/data/raw"
+out_dir: "/home/gborrego/gborrego/AB_Multiomics_CD14_CD4/CutTag/data/clean"
 
 # default should be trim_mode: "--detect_adapter_for_pe"
 trim_mode: "--trim_poly_x"
