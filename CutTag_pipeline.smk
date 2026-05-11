@@ -1,10 +1,10 @@
 # Snakefile
 
 # By Goboru, November 2025
-# Pipeline to run the complete pipeline to analyze ATAC data or do individual steps 
+# Pipeline to run the complete pipeline to preprocess Cut&Tag data or do individual steps 
 
 
-# Use: conda activate ATACpipeline; snakemake -s ATAC_pipeline.smk --cores 8
+# Use: conda activate ATACpipeline; snakemake -s CutTag_pipeline.smk --cores 8
 
 # Configurable paths
 configfile: "config.yaml"  # optional
