@@ -189,7 +189,7 @@ rule plot_mit_perc:
     log:
         f"{dir_out}/logs/plots/mit_perc_plot.log"
     params:
-        mit_perc = f"{dir_out}/final_bam_report"
+        mit_perc = f"{dir_out}/idx_report"
     shell:
         """
         # We pass the directory path (params.frip_dir) instead of the list
