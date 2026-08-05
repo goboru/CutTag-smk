@@ -136,34 +136,29 @@ rule multiqc_trimmed:
 
 # Rule 4: Alignment with bowtie2
 
-rule bowtie2_align:
+rule bowtie2_main:
     input:
         r1 = f"{dir_out}/temp_trimming/{{uniq_sample}}_r1.trimmed.fastq.gz",
         r2 = f"{dir_out}/temp_trimming/{{uniq_sample}}_r2.trimmed.fastq.gz"
     output:
-        bam = f"{dir_out}/aligned/{{uniq_sample}}_align.bam"
+        bam = f"{dir_out}/aligned/{{uniq_sample}}_main.bam"
     log:
-        bowtie = f"{dir_out}/logs/bowtie2/{{uniq_sample}}.log",
-        samtools = f"{dir_out}/logs/samtools_sort/{{uniq_sample}}.log"
+        bowtie = f"{dir_out}/logs/bowtie2/{{uniq_sample}}_main.log",
+        samtools = f"{dir_out}/logs/samtools_sort/{{uniq_sample}}_main.log"
     params:
         index = config["bowtie2_index"]
     threads: config["bowtie2_threads"]
     shell:
         """
-        (bowtie2 --very-sensitive -I 25 -X 700 \
+        (bowtie2 --very-sensitive --no-mixed --no-discordant \
+            --dovetail -I 10 -X 700 \
             -x {params.index} \
             -1 {input.r1} -2 {input.r2} \
             -p {threads} \
             2> {log.bowtie}) \
-        | samtools sort \
-            -@ 2 \
-            -o {output.bam} \
-            - \
-            2> {log.samtools}
+        | samtools sort -@ 4 -o {output.bam} - 2> {log.samtools}
         """
         
-
-
 
 
 # section 5: Post-alingments QCs
