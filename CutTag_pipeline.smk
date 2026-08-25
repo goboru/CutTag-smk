@@ -1,6 +1,6 @@
 # Snakefile
 
-# By Goboru, November 2025
+# By Goboru, August 2026
 # Pipeline to run the complete pipeline to analyze ATAC data or do individual steps 
 
 
@@ -50,7 +50,8 @@ rule all:
         f"{dir_out}/plots/all_samples_frip_mqc.png",
         expand(f"{dir_out}/tss/{{uniq_sample}}_tss_enrichment.png", uniq_sample=UNIQ_SAMPLES),
         f"{dir_out}/tss/all_samples_tsse.txt",
-        f"{dir_out}/plots/all_samples_tss_rich.png"
+        f"{dir_out}/plots/all_samples_tss_rich.png",
+        f"{dir_out}/plots/all_samples_fingerprint.png"
 
 
 rule variants:
@@ -535,6 +536,40 @@ rule plot_all_tss:
         tss_dir = f"{dir_out}/tss"
     shell:
         "Rscript plot_all_tss.R {output.plot} {params.tss_dir} &> {log}"
+
+
+# Rule 7.4: Fingerprint Plot (Signal-to-Noise evaluation)
+rule plot_fingerprint:
+    input:
+        # We use the BAMs filtered for fragment size and quality from Rule 6.1
+        bams = expand(f"{dir_out}/macs2_input/{{uniq_sample}}.filtered.bam", uniq_sample=UNIQ_SAMPLES),
+        # Require the indexes to exist so deepTools doesn't crash
+        bais = expand(f"{dir_out}/macs2_input/{{uniq_sample}}.filtered.bam.bai", uniq_sample=UNIQ_SAMPLES)
+    output:
+        plot = f"{dir_out}/plots/all_samples_fingerprint.png",
+        metrics = f"{dir_out}/qc_fingerprint/fingerprint_metrics.txt",
+        raw_counts = f"{dir_out}/qc_fingerprint/fingerprint_raw.tab"
+    log:
+        f"{dir_out}/logs/qc_fingerprint/plot_fingerprint.log"
+    params:
+        # Join the list of sample names into a space-separated string for deepTools
+        labels = lambda wildcards: " ".join(UNIQ_SAMPLES)
+    threads: 8
+    shell:
+        """
+        plotFingerprint \
+            -b {input.bams} \
+            --labels {params.labels} \
+            --minMappingQuality 30 \
+            --skipZeros \
+            --numberOfSamples 500000 \
+            -T "Fingerprints of CUT&Tag samples" \
+            --plotFile {output.plot} \
+            --outQualityMetrics {output.metrics} \
+            --outRawCounts {output.raw_counts} \
+            -p {threads} \
+            &> {log}
+        """
 
 
 # Rule 8: Variant Calling  ==============================================================
