@@ -4,7 +4,7 @@
 # Pipeline to run the complete pipeline to analyze ATAC data or do individual steps 
 
 
-# Use: conda activate ATACpipeline; snakemake -s ATAC_pipeline.smk --cores 8
+# Use: conda activate ATACpipeline; snakemake -s CutTag_pipeline.smk --cores 8
 
 # Variant calling is only performed if specified: 
     # snakemake -s ATAC_pipeline.smk variants --cores 8
@@ -47,7 +47,7 @@ rule all:
         f"{dir_out}/qc_fragment_sizes/all_samples_fragment_density.pdf",
         expand(f"{dir_out}/peaks/{{uniq_sample}}_peaks.narrowPeak", uniq_sample=UNIQ_SAMPLES),
         expand(f"{dir_out}/frip/{{uniq_sample}}_frip.txt", uniq_sample=UNIQ_SAMPLES), 
-        f"{dir_out}/frip/all_samples_frip_mqc.png",
+        f"{dir_out}/plots/all_samples_frip_mqc.png",
         expand(f"{dir_out}/tss/{{uniq_sample}}_tss_enrichment.png", uniq_sample=UNIQ_SAMPLES),
         f"{dir_out}/tss/all_samples_tsse.txt",
         f"{dir_out}/plots/all_samples_tss_rich.png"
@@ -141,7 +141,7 @@ rule bowtie2_main:
         r1 = f"{dir_out}/temp_trimming/{{uniq_sample}}_r1.trimmed.fastq.gz",
         r2 = f"{dir_out}/temp_trimming/{{uniq_sample}}_r2.trimmed.fastq.gz"
     output:
-        bam = f"{dir_out}/aligned/{{uniq_sample}}_main.bam"
+        bam = f"{dir_out}/aligned/{{uniq_sample}}_align.bam"
     log:
         bowtie = f"{dir_out}/logs/bowtie2/{{uniq_sample}}_main.log",
         samtools = f"{dir_out}/logs/samtools_sort/{{uniq_sample}}_main.log"

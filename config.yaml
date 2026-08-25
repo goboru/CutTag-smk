@@ -14,3 +14,15 @@ blacklist_bed: "/home/gborrego/gborrego/AB_Multiomics_CD14_CD4/data/external/ENC
 
 #TSS coordinates for TSS enrichment, hg38
 tss_bed: "/home/gborrego/gborrego/AB_Multiomics_CD14_CD4/data/external/hg38_tss_TableBrowser_1bp.bed" 
+
+
+# VARIANT CALLING ----------------------------------
+
+# Reference genome
+reference_orig: "/media/WORK/vserrano/ATAC_CD14/data/external/reference.fa"
+
+# Variant calling parameters
+vc_threads: 8
+min_mapq: 20
+min_baseq: 20
+max_depth: 250
